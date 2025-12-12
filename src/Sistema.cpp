@@ -107,3 +107,56 @@ void insertar_en_interno(NodoBInterno* nodo, int clave, NodoBPlusBase* hijo_izq,
     nodo -> set_hijo(i + 2, hijo_der);
     nodo -> set_num_claves(usadas + 1);
 }
+
+NodoBInterno* dividir_interno(NodoBInterno* nodo, int clave, NodoBPlusBase* hijo_izq, NodoBPlusBase* hijo_der, int& clave_arriba) {
+    int m = nodo -> get_orden();
+    int total = m + 1;
+
+    int* claves_temp = new int[total];
+    NodoBPlusBase** hijos_temp = new NodoBPlusBase*[total + 1];
+
+    int usadas = nodo -> get_num_claves();
+    int i = 0;
+
+    while (i < usadas && nodo -> get_clave(i) < clave) {
+        claves_temp[i] = nodo -> get_clave(i);
+        hijos_temp[i]  = nodo -> get_punteros()[i];
+        i++;
+    }
+
+    claves_temp[i] = clave;
+    hijos_temp[i]  = hijo_izq;
+    hijos_temp[i + 1] = hijo_der;
+
+    for (int j = i; j < usadas; j++) {
+        claves_temp[j + 1] = nodo -> get_clave(j);
+        hijos_temp[j + 2]  = nodo -> get_punteros()[j + 1];
+    }
+
+    int mitad = total / 2;
+    clave_arriba = claves_temp[mitad];
+
+    NodoBInterno* nuevo = new NodoBInterno(m);
+
+    nodo -> set_num_claves(0);
+    for (int j = 0; j < mitad; j++) {
+        nodo -> set_clave(j, claves_temp[j]);
+        nodo -> set_hijo(j, hijos_temp[j]);
+    }
+    nodo -> set_hijo(mitad, hijos_temp[mitad]);
+    nodo -> set_num_claves(mitad);
+
+    int k = 0;
+    for (int j = mitad + 1; j < total; j++) {
+        nuevo -> set_clave(k, claves_temp[j]);
+        nuevo -> set_hijo(k, hijos_temp[j]);
+        k++;
+    }
+    nuevo -> set_hijo(k, hijos_temp[total]);
+    nuevo -> set_num_claves(k);
+
+    delete[] claves_temp;
+    delete[] hijos_temp;
+
+    return nuevo;
+}
