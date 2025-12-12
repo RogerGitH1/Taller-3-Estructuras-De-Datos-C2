@@ -39,3 +39,55 @@ void insertar_en_hoja(NodoBHoja* hoja, int clave, NodoGrafo* info) {
     hoja -> set_num_claves(usados + 1);
 }
 
+NodoBHoja* dividir_hoja(NodoBHoja* hoja, int clave, NodoGrafo* info, int& clave_arriba) {
+    int m = hoja -> get_orden();
+    int total = m + 1;
+
+    int* claves_temp = new int[total];
+    NodoGrafo** datos_temp = new NodoGrafo*[total];
+
+    int usadas = hoja -> get_num_claves();
+    int i = 0;
+
+    while (i < usadas && hoja -> get_clave(i) < clave) {
+        claves_temp[i] = hoja -> get_clave(i);
+        datos_temp[i]  = hoja -> get_datos()[i];
+        i++;
+    }
+
+    claves_temp[i] = clave;
+    datos_temp[i]  = info;
+
+    for (int j = i; j < usadas; j++) {
+        claves_temp[j + 1] = hoja -> get_clave(j);
+        datos_temp[j + 1]  = hoja -> get_datos()[j];
+    }
+
+    int mitad = total / 2;
+    NodoBHoja* nueva = new NodoBHoja(m);
+
+    hoja -> set_num_claves(0);
+    for (int j = 0; j < mitad; j++) {
+        hoja -> set_clave(j, claves_temp[j]);
+        hoja -> set_dato(j, datos_temp[j]);
+    }
+    hoja -> set_num_claves(mitad);
+
+    int k = 0;
+    for (int j = mitad; j < total; j++) {
+        nueva -> set_clave(k, claves_temp[j]);
+        nueva -> set_dato(k, datos_temp[j]);
+        k++;
+    }
+    nueva -> set_num_claves(k);
+
+    nueva -> set_siguiente_hoja(hoja -> get_siguiente_hoja());
+    hoja -> set_siguiente_hoja(nueva);
+
+    clave_arriba = nueva -> get_clave(0);
+
+    delete[] claves_temp;
+    delete[] datos_temp;
+
+    return nueva;
+}
