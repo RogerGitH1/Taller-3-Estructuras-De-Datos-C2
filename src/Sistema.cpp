@@ -91,3 +91,19 @@ NodoBHoja* dividir_hoja(NodoBHoja* hoja, int clave, NodoGrafo* info, int& clave_
 
     return nueva;
 }
+
+void insertar_en_interno(NodoBInterno* nodo, int clave, NodoBPlusBase* hijo_izq, NodoBPlusBase* hijo_der) {
+    int usadas = nodo -> get_num_claves();
+    int i = usadas - 1;
+
+    while (i >= 0 && nodo -> get_clave(i) > clave) {
+        nodo -> set_clave(i + 1, nodo -> get_clave(i));
+        nodo -> set_hijo(i + 2, nodo -> get_punteros()[i + 1]);
+        i--;
+    }
+
+    nodo -> set_clave(i + 1, clave);
+    nodo -> set_hijo(i + 1, hijo_izq);
+    nodo -> set_hijo(i + 2, hijo_der);
+    nodo -> set_num_claves(usadas + 1);
+}
