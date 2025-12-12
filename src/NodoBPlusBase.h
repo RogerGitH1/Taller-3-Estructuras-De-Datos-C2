@@ -15,6 +15,11 @@ public:
     int get_num_claves() const;
     int get_clave(int idx) const;
     bool get_es_hoja() const;
+    int* get_claves();
+    void set_num_claves(int n);
+    int get_orden() const;
+    void set_clave(int idx, int valor);
+
 };
 
 class NodoBInterno: public NodoBPlusBase {
@@ -26,6 +31,8 @@ public:
     int buscar_siguiente(int clave);
 
     NodoBPlusBase* get_hijo(int idx);
+    NodoBPlusBase** get_punteros();
+    void set_hijo(int idx, NodoBPlusBase* hijo);
 };
 
 class NodoBHoja: public NodoBPlusBase {
@@ -40,4 +47,8 @@ public:
 
     NodoBHoja* get_siguiente_hoja() const;
     void set_siguiente_hoja(NodoBHoja* sig);
+    NodoGrafo** get_datos();
+    void set_dato(int idx, NodoGrafo* nodo_grafo);
+    void set_clave(int idx, int valor);
+
 };

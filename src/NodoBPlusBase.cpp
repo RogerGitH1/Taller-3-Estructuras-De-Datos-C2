@@ -24,6 +24,21 @@ bool NodoBPlusBase::get_es_hoja() const {
     return es_hoja;
 }
 
+int* NodoBPlusBase::get_claves() {
+    return claves;
+}
+
+void NodoBPlusBase::set_num_claves(int n) {
+    num_claves = n;
+}
+
+int NodoBPlusBase::get_orden() const {
+    return orden;
+}
+
+void NodoBPlusBase::set_clave(int idx, int valor) {
+    claves[idx] = valor;
+}
 
 NodoBInterno::NodoBInterno(int orden): NodoBPlusBase(orden, false),punteros(nullptr) {
     punteros = new NodoBPlusBase*[orden + 1];
@@ -44,10 +59,19 @@ int NodoBInterno::buscar_siguiente(int clave) {
     return i;
 }
 
+
+
 NodoBPlusBase* NodoBInterno::get_hijo(int idx) {
     return punteros[idx];
 }
 
+NodoBPlusBase** NodoBInterno::get_punteros() {
+    return punteros;
+}
+
+void NodoBInterno::set_hijo(int idx, NodoBPlusBase* hijo) {
+    punteros[idx] = hijo;
+}
 
 NodoBHoja::NodoBHoja(int orden): NodoBPlusBase(orden, true),datos(nullptr),siguiente_hoja(nullptr) {
     datos = new NodoGrafo*[orden];
@@ -77,4 +101,16 @@ NodoBHoja* NodoBHoja::get_siguiente_hoja() const {
 
 void NodoBHoja::set_siguiente_hoja(NodoBHoja* sig) {
     siguiente_hoja = sig;
+}
+
+NodoGrafo** NodoBHoja::get_datos() {
+    return datos;
+}
+
+void NodoBHoja::set_dato(int idx, NodoGrafo* ng) {
+    datos[idx] = ng;
+}
+
+void NodoBHoja::set_clave(int idx, int valor) {
+    claves[idx] = valor;
 }
