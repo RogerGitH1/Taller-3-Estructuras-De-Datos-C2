@@ -16,6 +16,8 @@ public:
     Sistema(int orden);
     ~Sistema();
 
+    NodoBHoja* buscar_hoja(int clave);
+    
     void insertar_nodo_grafo(int clave, NodoGrafo* nodo_grafo);
 
     NodoGrafo* buscar_nodo_grafo(int clave);
