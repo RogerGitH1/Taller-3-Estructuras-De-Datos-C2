@@ -160,3 +160,54 @@ NodoBInterno* dividir_interno(NodoBInterno* nodo, int clave, NodoBPlusBase* hijo
 
     return nuevo;
 }
+
+void Sistema::insertar_nodo_grafo(int clave, NodoGrafo* info) {
+    NodoBHoja* hoja = buscar_hoja(clave);
+
+    if (hoja -> get_num_claves() < hoja -> get_orden()) {
+        insertar_en_hoja(hoja, clave, info);
+        return;
+    }
+
+    int clave_arriba;
+    NodoBHoja* hoja_nueva = dividir_hoja(hoja, clave, info, clave_arriba);
+
+    if (raiz -> get_es_hoja()) {
+        NodoBInterno* nueva = new NodoBInterno(orden);
+        nueva -> set_clave(0, clave_arriba);
+        nueva -> set_hijo(0, hoja);
+        nueva -> set_hijo(1, hoja_nueva);
+        nueva -> set_num_claves(1);
+        raiz = nueva;
+        return;
+    }
+
+    NodoBPlusBase* actual = raiz;
+    NodoBPlusBase* padre = nullptr;
+
+    while (!actual -> get_es_hoja()) {
+        NodoBInterno* in = (NodoBInterno*) actual;
+        int pos = in -> buscar_siguiente(clave_arriba);
+        padre = actual;
+        actual = in -> get_hijo(pos);
+    }
+
+    NodoBInterno* p = (NodoBInterno*) padre;
+
+    if (p -> get_num_claves() < p -> get_orden()) {
+        insertar_en_interno(p, clave_arriba, hoja, hoja_nueva);
+        return;
+    }
+
+    int clave_arriba2;
+    NodoBInterno* nuevo_int = dividir_interno(p, clave_arriba, hoja, hoja_nueva, clave_arriba2);
+
+    if (padre == raiz) {
+        NodoBInterno* r2 = new NodoBInterno(orden);
+        r2 -> set_clave(0, clave_arriba2);
+        r2 -> set_hijo(0, p);
+        r2 -> set_hijo(1, nuevo_int);
+        r2 -> set_num_claves(1);
+        raiz = r2;
+    }
+}
