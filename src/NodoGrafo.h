@@ -40,14 +40,14 @@ public:
 
 class NodoArchivo: public NodoGrafo {
 private:
-    int tamaño;
-    int tipo; 
+    int tamano;
+    int tipo;
 public:
-    NodoArchivo(int id, int tamaño, int tipo);
+    NodoArchivo(int id, int tamano, int tipo);
     virtual ~NodoArchivo();
 
     bool es_directorio() override { return false; }
 
-    int get_tamaño() const;
+    int get_tamano() const;
     int get_tipo() const;
 };

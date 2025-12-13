@@ -113,14 +113,14 @@ void NodoDirectorio::eliminar_hijo(int id_hijo) {
 }
 
 
-NodoArchivo::NodoArchivo(int id, int tamaño, int tipo): NodoGrafo(id),tamaño(tamaño),tipo(tipo) {
+NodoArchivo::NodoArchivo(int id, int tamano, int tipo): NodoGrafo(id), tamano(tamano), tipo(tipo) {
 }
 
 NodoArchivo::~NodoArchivo() {
 }
 
-int NodoArchivo::get_tamaño() const {
-    return tamaño;
+int NodoArchivo::get_tamano() const {
+    return tamano;
 }
 
 int NodoArchivo::get_tipo() const {
